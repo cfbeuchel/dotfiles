@@ -1,0 +1,30 @@
+[colors.primary]
+background = "#002B36"
+foreground = "#F6F5F4"
+
+[font]
+size = 12.0
+
+[font.bold]
+family = "DroidSansM Nerd Font Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "DroidSansM Nerd Font Mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "DroidSansM Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "DroidSansM Nerd Font Mono"
+style = "Regular"
+
+[shell]
+program = "/bin/bash"
+
+[keyboard]
+bindings = [
+   { key = "Return", mods = "Control|Shift", action = "SpawnNewInstance" }
+]

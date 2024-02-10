@@ -1,0 +1,9 @@
+# I want to use a central location for my package library
+R_LIBS_USER="/home/carl/Documents/03_R"
+
+# English errors are easier to research & output is more sharable
+LANGUAGE="en_US.utf8"
+
+# Charite has proxy setup
+http_proxy="http://proxy.charite.de:8080"
+https_proxy="http://proxy.charite.de:8080"

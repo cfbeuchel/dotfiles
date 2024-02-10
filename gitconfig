@@ -1,0 +1,47 @@
+[user]
+    email = carl.beuchel@charite.de 
+	name = cfbeuchel
+    github = cfbeuchel
+	signingKey = 0x197AD7B7ACAB63C6
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[diff "pandoc"]
+	textconv=pandoc --to=markdown
+	prompt = false
+
+[alias]
+    wdiff = diff \
+        --word-diff=color \
+        --unified=1
+	lg = !"git lg1"
+    lg1 = log --graph \
+        --abbrev-commit \
+        --decorate \
+        --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset)%C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' \
+        --all
+    lg2 = log --graph \
+        --abbrev-commit \
+        --decorate \
+        --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n'' %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' \
+        --all
+
+[color]
+    status = auto
+    diff = auto
+    branch = auto
+    interactive = auto
+    ui = true
+    pager = true
+
+[credential]
+	helper = store --file ~/.my-credentials
+
+[http]
+	proxy = http://proxy.charite.de:8080
+
+[https]
+	proxy = http://proxy.charite.de:8080
