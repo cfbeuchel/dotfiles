@@ -14,6 +14,7 @@ alias tree="tree -C"
 alias mamba='micromamba'
 alias conda='micromamba'
 alias sudo='sudo -E'
+alias disable_edp1='swaymsg output eDP-1 disable'
 
 # Set an alias for connecting to RStudio
 alias launch-rstudio="conda activate charite-hpc && sc-launch-rstudio \
