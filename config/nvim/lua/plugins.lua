@@ -1,88 +1,121 @@
-return require('packer').startup(function()
-
-  -- Packer package manager
-  use 'wbthomason/packer.nvim'
-
-  -- Mason
-  use 'williamboman/mason.nvim'
-  use 'williamboman/mason-lspconfig.nvim'
+return require('lazy').setup({
 
   -- LSP configuration
-  use 'neovim/nvim-lspconfig'
-
-  -- Rust configuration
-  -- use 'simrat39/rust-tools.nvim'
-
-  use 'kassio/neoterm'
-
-  -- Easy-align tool
-  use 'junegunn/vim-easy-align'
-
-  -- Awesome colorschemes
-  use 'rafi/awesome-vim-colorschemes'
-
-  -- Toggle Maximize
-  use 'pmalek/toogle-maximize.vim'
-
-  -- Surround with Parenthesis etc.
-  use 'tpope/vim-surround'
-
-  -- Comment out
-  use 'tpope/vim-commentary'
-
-  -- Vimtex
-  use 'lervag/vimtex'
-
-  -- CMP Autocompletion
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
-  use 'hrsh7th/nvim-cmp'
-  use 'rafamadriz/friendly-snippets'
-
-  -- For luasnip users
-  use 'L3MON4D3/LuaSnip'
-  use 'saadparwaiz1/cmp_luasnip'
-
-  -- Fuzzy Seach
-  use 'vijaymarupudi/nvim-fzf'
-  use 'ibhagwan/fzf-lua'
-
-  -- Icons
-  use 'nvim-tree/nvim-web-devicons'
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+    }
+  },
 
   -- Ripgrep
-  use 'duane9/nvim-rg'
+  'duane9/nvim-rg',
 
   -- Formatter for Mason
-  use 'mhartington/formatter.nvim'
+  'mhartington/formatter.nvim',
+
+  -- Help with remembering keybindings
+  { 'folke/which-key.nvim', opts = {} },
+
+  -- Telescope
+  {
+    'nvim-telescope/telescope.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        'nvim-telescope/telescope-file-browser.nvim',
+        build = 'make',
+        cond = function()
+          return vim.fn.executable 'make' == 1
+        end,
+      },
+    }
+  },
+
+  -- Fuzzy Seach
+  'vijaymarupudi/nvim-fzf',
+  'ibhagwan/fzf-lua',
+
+
+  -- CMP Autocompletion
+  {
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'lukas-reineke/cmp-rg',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      'rafamadriz/friendly-snippets',
+    }
+  },
+
+  -- TREPL functions to send to terminal
+  'kassio/neoterm',
+
+  -- Easy-align tool
+  'junegunn/vim-easy-align',
+
+  -- Awesome colorschemes
+  'rafi/awesome-vim-colorschemes',
+
+  -- Toggle Maximize
+  'pmalek/toogle-maximize.vim',
+
+  -- Deal with Tabstop width etc.
+  'tpope/vim-sleuth',
+
+  -- Surround with Parenthesis etc.
+  'tpope/vim-surround',
+
+  -- Comment out
+  'tpope/vim-commentary',
 
   -- Status Line
+  {
+      'nvim-lualine/lualine.nvim',
+      dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true }
+  },
 
   -- Navigation
-  -- use 'nvim-neo-tree/neo-tree.nvim'
-
-  -- telescope -> replace fzf? use with rg, fd
-  -- https://github.com/nvim-telescope/telescope.nvim
-  -- https://github.com/nvim-telescope/telescope-file-browser.nvim
-  -- https://github.com/nvim-lua/plenary.nvim
-
-  -- TODO
-  -- Test, DBG
+  -- 'nvim-neo-tree/neo-tree.nvim',
 
   -- Treesitter
-  use {
+  {
       'nvim-treesitter/nvim-treesitter',
-      run = ':TSUpdate'
-  }
+      dependencies = {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+      },
+      build = ':TSUpdate',
+  },
+
+  -- Tags
+  -- Gutentags
+  -- Requirement: `Exuberant Ctags`
+  'ludovicchabant/vim-gutentags',
+
+  -- Tagbar
+  'preservim/tagbar',
+
+  -- Vim Tmux Navigator
+  'christoomey/vim-tmux-navigator',
+
+  -- Vimtex
+  'lervag/vimtex',
+
+  -- Rust configuration
+  -- 'simrat39/rust-tools.nvim',
+
+  -- Julia Support
+  'JuliaEditorSupport/julia-vim',
 
   -- Syntax Plugins
-  use 'vim-pandoc/vim-pandoc-syntax'
-  use 'quarto-dev/quarto-nvim'
-  use 'jmbuhr/otter.nvim'
-  use 'LukeGoodsell/nextflow-vim'
-
-  -- https://github.com/jose-elias-alvarez/null-ls.nvim
-
-end)
+  'vim-pandoc/vim-pandoc-syntax',
+  'quarto-dev/quarto-nvim',
+  'jmbuhr/otter.nvim',
+  'LukeGoodsell/nextflow-vim',
+})
