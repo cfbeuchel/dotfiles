@@ -34,11 +34,6 @@ return require('lazy').setup({
     }
   },
 
-  -- Fuzzy Seach
-  'vijaymarupudi/nvim-fzf',
-  'ibhagwan/fzf-lua',
-
-
   -- CMP Autocompletion
   {
     'hrsh7th/nvim-cmp',

@@ -326,18 +326,6 @@ vim.api.nvim_create_autocmd('User', {
     -- , '[W]orkspace [S]ymbols'
     bufmap('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols)
 
-    -- Jump to the definition
-    -- bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
-
-    -- Lists all the references
-    -- bufmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
-
-    -- Lists all the implementations for the symbol under the cursor
-    -- bufmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
-
-    -- Jumps to the definition of the type symbol
-    -- bufmap('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
-
     -- Jump to declaration
     bufmap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
 
@@ -365,8 +353,8 @@ vim.api.nvim_create_autocmd('User', {
 require('which-key').register {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-  -- ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-  -- ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+  ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
@@ -457,7 +445,6 @@ lspconfig.marksman.setup({
 
 -- TODO (https://github.com/jmbuhr/otter.nvim)
 
-
 -- VIM SURROUND --
 
 -- TODO
@@ -476,8 +463,8 @@ require("quarto").setup{
 }
 
 -- Julia
--- TODO: 'julia-vim'
 
+-- TODO: 'julia-vim'
 
 -- NETRW --
 

@@ -3,14 +3,6 @@
 -- shortcut for remapping keys
 local map = vim.api.nvim_set_keymap
 
--- FZF Lua
-map('n', '<Leader>f', "<cmd>lua require('fzf-lua').files()<CR>",
-    { noremap = true, silent = true })
-map('n', '<Leader>b', "<cmd>lua require('fzf-lua').buffers()<CR>",
-    { noremap = true, silent = true })
-map('n', '<Leader>g', "<cmd>lua require('fzf-lua').grep()<CR>",
-    { noremap = true, silent = true })
-
 -- Easy-align remapping
 map('x', 'ga', '<Plug>(EasyAlign)', {noremap = false})
 map('n', 'ga', '<Plug>(EasyAlign)', {noremap = false})
@@ -23,10 +15,6 @@ map('n', '<C-Right>',  ':tabnext<CR>', {noremap = true})
 map('v', '<Leader>y', '"*y', {noremap = true})
 map('n', '<Leader>y', '"*y', {noremap = true})
 map('n', '<Leader>p', '"*p', {noremap = true})
-
---Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
--- map('n', '<Space>', '/', {noremap = false})
--- map('n', '<S-Space>', '?', {noremap = false})
 
 -- Toggle maximizer
 map('n', '<S-m>', ':call ToggleMaximizeCurrentWindow()<CR>',
@@ -45,7 +33,6 @@ map('n', '<C-n>', ':bnext<CR>', {noremap = true})
 map('n', '<C-p>', ':bprevious<CR>', {noremap = true})
 
 -- Close buffer in split without closing the split
-
 map('n', '<Leader>bd', ':b#<bar>bd#<CR>', {noremap = true})
 
 -- REPL Commands
@@ -57,8 +44,6 @@ map('t', '<A-n>', ' <- ', {noremap = true})
 map('i', '<A-n>', ' <- ', {noremap = true})
 map('t', '<A-m>', ' %>% ', {noremap = true})
 map('i', '<A-m>', ' %>% ', {noremap = true})
--- map('i', ',', ', ', {noremap = true})
--- map('i', '=', ' = ', {noremap = true})
 
 -- Insert Quarto Code Chunk (TODO Make makro)
 map('i', '<A-i>', '<CR>```{r}<CR><CR>```<up>', {noremap = true})
