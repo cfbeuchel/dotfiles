@@ -119,14 +119,9 @@ vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
-end, { desc = '[/] Fuzzily search in current buffer' })
+vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '[/] Fuzzily search in current buffer' })
 
+-- New function
 local function telescope_live_grep_open_files()
   require('telescope.builtin').live_grep {
     grep_open_files = true,
@@ -163,17 +158,21 @@ local luasnip = require('luasnip')
 local select_opts = {behavior = cmp.SelectBehavior.Select}
 
 cmp.setup({
+  completion = {
+    autocomplete = false,
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end
   },
   sources = {
-    {name = 'rg'}, -- Ripgrep support w/ `cmp-rg`
+    -- Use `rg` to get completion options
+    -- {name = 'rg', keyword_length = 5},
     {name = 'path'},
     {name = 'nvim_lsp', keyword_length = 3},
-    -- this disables the text completion options
-    -- {name = 'buffer', keyword_length = 3},
+    -- this disables the text from buffer
+    -- {name = 'buffer', keyword_length = 5},
     {name = 'luasnip', keyword_length = 2},
   },
   window = {
@@ -194,7 +193,17 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<CR>'] = cmp.mapping.confirm({select = true}),
+    ['<CR>'] = cmp.mapping({
+       i = function(fallback)
+         if cmp.visible() and cmp.get_active_entry() then
+           cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+         else
+           fallback()
+         end
+       end,
+       s = cmp.mapping.confirm({ select = true }), -- this is the default for CR also
+       c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+     }),
     ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
     ['<Down>'] = cmp.mapping.select_next_item(select_opts),
     ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
@@ -418,6 +427,9 @@ lspconfig.julials.setup({
 lspconfig.bashls.setup{}
 
 -- Lua
+-- https://github.com/hrsh7th/nvim-cmp/issues/684
+--vim.opt.completion_workspaceWord = false
+--vim.opt.Lua.completion.showWord = 'Disable'
 lspconfig.lua_ls.setup{}
 
 -- R
