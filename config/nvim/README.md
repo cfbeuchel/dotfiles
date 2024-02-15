@@ -1,9 +1,5 @@
 
-* tab stop? vim sleuth?
-* Switch to lazy.vim
+* Debugging w/ DAP
 * fugitive, git-signs
 * Otter, quarto proper setup
-* Plenary
-* Telescope
-* luasnp support
-* what is contained in |standard-plugin-list|?
+* More snippets?
