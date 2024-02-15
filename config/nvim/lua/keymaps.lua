@@ -70,3 +70,7 @@ map('n', '<leader>s?', 'z=', {noremap = false})
 -- Tagbar
 map('n', '<F8>', ':TagbarToggle<CR>', {noremap = false})
 
+-- Navigation
+map('n', '<F7>', ':Lexplore<CR>', {noremap = false})
+
+

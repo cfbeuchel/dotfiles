@@ -113,6 +113,7 @@ return require('lazy').setup({
     'quarto-dev/quarto-nvim',
     dependencies = {
       'vim-pandoc/vim-pandoc-syntax',
+      'jmbuhr/otter.nvim',
     }
   },
 

@@ -49,9 +49,8 @@ require("mason-lspconfig").setup {
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
   ensure_installed = { "rust", "lua", "r", "vimdoc", "julia" },
-  sync_install = false,
-  auto_install = true,
-  ignore_install = { "javascript" },
+  sync_install = true,
+  auto_install = false,
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = false,
@@ -95,7 +94,7 @@ local function find_git_root()
     current_dir = cwd
   else
     current_dir = vim.fn.fnamemodify(current_file, ':h')
-  end 
+  end
   local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
   if vim.v.shell_error ~= 0 then
     print 'Not a git repository. Searching on current working directory'
@@ -114,20 +113,19 @@ local function live_grep_git_root()
   end
 end
 
-vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
-
--- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '[/] Fuzzily search in current buffer' })
-
--- New function
+-- Grep in Open Files
 local function telescope_live_grep_open_files()
   require('telescope.builtin').live_grep {
     grep_open_files = true,
     prompt_title = 'Live Grep in Open Files',
   }
 end
+--
+-- See `:help telescope.builtin`
+vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
+vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
+vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '[/] Fuzzily search in current buffer' })
 vim.keymap.set('n', '<leader>st', require('telescope.builtin').current_buffer_tags, { desc = '[S]earch [T]ags' })
 vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
 vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
@@ -170,6 +168,7 @@ cmp.setup({
   sources = {
     -- Use `rg` to get completion options
     -- {name = 'rg', keyword_length = 5},
+    {name = 'otter'},
     {name = 'path'},
     {name = 'nvim_lsp', keyword_length = 3},
     -- this disables the text from buffer
@@ -202,11 +201,13 @@ cmp.setup({
            fallback()
          end
        end,
-       s = cmp.mapping.confirm({ select = true }), -- this is the default for CR also
-       c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+       s = cmp.mapping.confirm({ select = false }), -- this is the default for CR also
+       c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
      }),
-    ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
-    ['<Down>'] = cmp.mapping.select_next_item(select_opts),
+    ['<Left>'] = cmp.mapping.select_prev_item(select_opts),
+    ['<Right>'] = cmp.mapping.select_prev_item(select_opts),
+    -- ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
+    -- ['<Down>'] = cmp.mapping.select_next_item(select_opts),
     ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
     ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
@@ -448,17 +449,85 @@ lspconfig.marksman.setup({
 
 -- GUTENTAGS --
 
--- require("vim-gutentags").setup{}
+vim.g.gutentags_ctags_exclude = {
+  '*.git',
+  '*.svg',
+  '*.hg',
+  '*/tests/*',
+  'build',
+  'dist',
+  '*sites/*/files/*',
+  'bin',
+  'node_modules',
+  'bower_components',
+  'cache',
+  'compiled',
+  'docs',
+  'example',
+  'bundle',
+  'vendor',
+  '*.md',
+  '*-lock.json',
+  '*.lock',
+  '*bundle*.js',
+  '*build*.js',
+  '.*rc*',
+  '*.json',
+  '*.min.*',
+  '*.map',
+  '*.bak',
+  '*.zip',
+  '*.pyc',
+  '*.class',
+  '*.sln',
+  '*.Master',
+  '*.csproj',
+  '*.tmp',
+  '*.csproj.user',
+  '*.cache',
+  '*.pdb',
+  'tags*',
+  'cscope.*',
+  '*.swp',
+  '*.swo',
+  '*.bmp',
+  '*.gif',
+  '*.ico',
+  '*.jpg',
+  '*.png',
+  '*.rar',
+  '*.zip',
+  '*.tar',
+  '*.tar.gz',
+  '*.tar.xz',
+  '*.tar.bz2',
+  '*.pdf',
+  '*.doc',
+  '*.docx',
+  '*.ppt',
+  '*.pptx',
+}
+vim.g.gutentags_enabled = 1
+vim.g.gutentags_add_default_project_roots = false
+vim.g.gutentags_project_root = { '.here', '.git', '*.Rproj' }
+vim.g.gutentags_cache_dir = vim.fn.stdpath("data") .. '/ctags'
+vim.g.gutentags_generate_on_new = true
+vim.g.gutentags_generate_on_missing = true
+vim.g.gutentags_generate_on_write = true
+vim.g.gutentags_generate_on_empty_buffer = true
+vim.g.gutentags_modules = true
+vim.g.gutentags_ctags_extra_args = { '--tag-relative=yes', '--fields=+ailmnS', }
+vim.g.gutentags_modules = { 'ctags' }
+vim.cmd([[command! -nargs=0 GutentagsClearCache call system('rm ' . g:gutentags_cache_dir . '/*')]])
 
 -- TAGBAR --
 -- Languages have to be configured: https://github.com/preservim/tagbar/wiki#r
 -- create `~/.ctags` and add what the wiki says
--- TODO This doesnt work, yet!
 
 vim.cmd[[
-let g:rust_use_custom_ctags_defs = 1  " if using rust.vim
+let g:rust_use_custom_ctags_defs = 0  " if using rust.vim
 let g:tagbar_type_rust = {
-  \ 'ctagsbin' : '/path/to/your/universal/ctags',
+  \ 'ctagsbin' : '/usr/bin/ctags',
   \ 'ctagstype' : 'rust',
   \ 'kinds' : [
       \ 'n:modules',
@@ -491,7 +560,7 @@ let g:tagbar_type_rust = {
   \ },
 \ }
 let g:tagbar_type_r = {
-    \ 'ctagsbin'  : 'ctags-universal',
+    \ 'ctagsbin'  : '/usr/bin/ctags',
     \ 'ctagstype' : 'r',
     \ 'kinds'     : [
         \ 'f:Functions',
@@ -500,6 +569,7 @@ let g:tagbar_type_r = {
     \ ]
 \ }
 let g:tagbar_type_julia = {
+    \ 'ctagsbin'  : '/usr/bin/ctags',
     \ 'ctagstype' : 'julia',
     \ 'kinds'     : [
         \ 't:struct', 'f:function', 'm:macro', 'c:const']
@@ -526,6 +596,19 @@ require("quarto").setup{
         chunks = 'all'
     }
 }
+
+-- Quarto
+require('quarto').setup({
+  lspFeatures = {
+    languages = { 'r', 'julia', 'bash' },
+  },
+  keymap = {
+    hover = 'K',
+    definition = 'gd',
+    rename = '<leader>lR',
+    references = 'gr',
+  }
+})
 
 -- Julia
 
