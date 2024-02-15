@@ -108,9 +108,15 @@ return require('lazy').setup({
   -- Julia Support
   'JuliaEditorSupport/julia-vim',
 
+  -- Quarto Support
+  {
+    'quarto-dev/quarto-nvim',
+    dependencies = {
+      'vim-pandoc/vim-pandoc-syntax',
+    }
+  },
+
   -- Syntax Plugins
-  'vim-pandoc/vim-pandoc-syntax',
-  'quarto-dev/quarto-nvim',
   'jmbuhr/otter.nvim',
   'LukeGoodsell/nextflow-vim',
 })
