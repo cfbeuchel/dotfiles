@@ -48,12 +48,13 @@ require("mason-lspconfig").setup {
 -- Prerequisite: Install `tree-sitter-cli`
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "rust", "lua", "r", "vimdoc", "julia" },
+  ensure_installed = { "rust", "lua", "r", "vimdoc", "julia", "yaml", "latex", "markdown", "markdown_inline" },
   sync_install = true,
   auto_install = false,
   highlight = {
     enable = true,
-    additional_vim_regex_highlighting = false,
+    additional_vim_regex_highlighting = false, -- original setting
+    -- additional_vim_regex_highlighting = { 'markdown' },
   },
   indent = {enable = true},
   incremental_selection = {
@@ -121,7 +122,6 @@ local function telescope_live_grep_open_files()
     prompt_title = 'Live Grep in Open Files',
   }
 end
---
 -- See `:help telescope.builtin`
 vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -138,7 +138,6 @@ vim.keymap.set('n', '<leader>sf', function()
     previewer = false,
   })
 end, { desc = '[S]earch [F]iles' })
-
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
@@ -177,7 +176,12 @@ cmp.setup({
     -- Use `rg` to get completion options
     -- {name = 'rg', keyword_length = 5},
     {name = 'otter'},
+    {name = 'pandoc_references'},
+    {name = 'latex_symbols'},
     {name = 'path'},
+    {name = 'spell'},
+    {name = 'emoji'},
+    {name = 'calc'},
     {name = 'nvim_lsp', keyword_length = 3},
     -- this disables the text from buffer
     -- {name = 'buffer', keyword_length = 5},
@@ -445,7 +449,7 @@ lspconfig.lua_ls.setup{}
 -- R
 lspconfig.r_language_server.setup {
     cmd = { "/usr/bin/R", "--slave", "-e", "languageserver::run()" },
-    filetypes={"r", "rmd", "quarto"},
+    filetypes={"r", "rmd"},
 }
 
 -- Marksman
@@ -515,10 +519,11 @@ vim.g.gutentags_ctags_exclude = {
   '*.ppt',
   '*.pptx',
 }
-vim.g.gutentags_enabled = 1
+vim.g.gutentags_enabled = 0
 vim.g.gutentags_add_default_project_roots = false
 vim.g.gutentags_project_root = { '.here', '.git', '*.Rproj' }
-vim.g.gutentags_cache_dir = vim.fn.stdpath("data") .. '/ctags'
+-- vim.g.gutentags_cache_dir = vim.fn.stdpath("data") .. '/ctags'
+-- vim.g.gutentags_cache_dir = '/home/carl/.cache/nvim/ctags/'
 vim.g.gutentags_generate_on_new = true
 vim.g.gutentags_generate_on_missing = true
 vim.g.gutentags_generate_on_write = true
@@ -599,23 +604,10 @@ let g:tagbar_type_julia = {
 -- Programming Language Support --
 
 -- Quarto
-require("quarto").setup{
-    lsp_features = {
-        chunks = 'all'
-    }
-}
-
--- Quarto
 require('quarto').setup({
   lspFeatures = {
     languages = { 'r', 'julia', 'bash' },
   },
-  keymap = {
-    hover = 'K',
-    definition = 'gd',
-    rename = '<leader>lR',
-    references = 'gr',
-  }
 })
 
 -- Julia

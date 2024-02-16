@@ -35,6 +35,11 @@ return require('lazy').setup({
   {
     'hrsh7th/nvim-cmp',
     dependencies = {
+      'kdheepak/cmp-latex-symbols',
+      'jc-doyle/cmp-pandoc-references',
+      'hrsh7th/cmp-calc',
+      'hrsh7th/cmp-emoji',
+      'f3fora/cmp-spell',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
