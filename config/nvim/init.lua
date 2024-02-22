@@ -522,7 +522,7 @@ vim.g.gutentags_ctags_exclude = {
 vim.g.gutentags_enabled = 0
 vim.g.gutentags_add_default_project_roots = false
 vim.g.gutentags_project_root = { '.here', '.git', '*.Rproj' }
--- vim.g.gutentags_cache_dir = vim.fn.stdpath("data") .. '/ctags'
+vim.g.gutentags_cache_dir = vim.fn.stdpath("data") .. '/ctags'
 -- vim.g.gutentags_cache_dir = '/home/carl/.cache/nvim/ctags/'
 vim.g.gutentags_generate_on_new = true
 vim.g.gutentags_generate_on_missing = true
@@ -690,5 +690,6 @@ vim.cmd([[
     autocmd BufNewFile,BufRead *.smk set syntax=snakemake
     autocmd BufNewFile,BufRead *.def set filetype=bash
     autocmd BufNewFile,BufRead *.job set syntax=bash
+    autocmd BufNewFile,BufRead *.md set syntax=markdown
 ]])
 
