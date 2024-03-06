@@ -121,5 +121,5 @@ return require('lazy').setup({
 
   -- Syntax Plugins
   'jmbuhr/otter.nvim',
-  'LukeGoodsell/nextflow-vim',
+  'Mxrcon/nextflow-vim',
 })

@@ -36,8 +36,8 @@ map('n', '<C-p>', ':bprevious<CR>', {noremap = true})
 map('n', '<Leader>bd', ':b#<bar>bd#<CR>', {noremap = true})
 
 -- REPL Commands
-map('n', '<C-CR>', ':TREPLSendLine<CR>', {noremap = true})
-map('v', '<C-CR>', ':TREPLSendSelection<CR>', {noremap = true})
+map('n', '<C-CR>', ':TREPLSendLine<CR>j', {noremap = true})
+map('v', '<C-CR>', ':TREPLSendSelection<CR>j', {noremap = true})
 
 -- R Shortcuts
 map('t', '<A-->', ' <- ', {noremap = true})
