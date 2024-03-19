@@ -69,6 +69,10 @@ export JULIA_EDITOR=$EDITOR
 export CMDSTAN='/home/carl/Dokumente/01_programs/git-repositories/cmdstan/'
 export JULIA_CMDSTAN_HOME=$CMDSTAN
 
+# Expand Bash History
+HISTSIZE=2000
+HISTFILESIZE=4000
+
 # alias for clearing screen properly
 alias cls='printf "\033c"'
 

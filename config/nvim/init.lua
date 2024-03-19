@@ -459,6 +459,15 @@ lspconfig.marksman.setup({
     standalone = true
 })
 
+-- Groovy
+require'lspconfig'.groovyls.setup{
+  -- Unix
+  cmd = { "java", "-jar", "/home/carl/Documents/06_language_server_protocol/groovy-language-server/build/libs/groovy-language-server-all.jar" },
+  filetypes = { "groovy", "nextflow"},
+  single_file_support = true,
+  standalone = true,
+}
+
 -- GUTENTAGS --
 
 vim.g.gutentags_ctags_exclude = {
