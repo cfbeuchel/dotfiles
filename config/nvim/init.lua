@@ -438,7 +438,7 @@ lspconfig.julials.setup({
 })
 
 -- Bash
-lspconfig.bashls.setup{}
+-- lspconfig.bashls.setup{}
 
 -- Lua
 -- https://github.com/hrsh7th/nvim-cmp/issues/684
