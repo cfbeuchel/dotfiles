@@ -23,7 +23,7 @@ alias launch-rstudio="conda activate charite-hpc && sc-launch-rstudio \
     -N 1 \
     -n 1 \
     --mem 64G \
-    -c 32 \
+    -c 16 \
     -i /sc-projects/sc-proj-computational-medicine/programs/all-inclusive-rstudio-apptainer/sif/all_inclusive_rstudio_4.3.1.sif \
     -B /sc-projects/sc-proj-computational-medicine/ \
     -B /sc-scratch/sc-scratch-computational-medicine/ \
@@ -35,6 +35,22 @@ alias mount-onedrive="rclone mount \
     --vfs-cache-mode full \
     ChariteOneDrive: OneDrive/ \
     --header 'Prefer: Include-Feature=AddToOneDrive'"
+
+launch_rstudio() {
+conda activate charite-hpc
+sc-launch-rstudio \
+    -t 12:00:00 \
+    -u cabe12 \
+    -N 1 \
+    -n 1 \
+    --mem 64G \
+    -c 16 \
+    -i /sc-projects/sc-proj-computational-medicine/programs/all-inclusive-rstudio-apptainer/sif/all_inclusive_rstudio_4.3.1.sif \
+    -B /sc-projects/sc-proj-computational-medicine/ \
+    -B /sc-scratch/sc-scratch-computational-medicine/ \
+    -B /sc-resources/ukb/data/ \
+    -B /opt/conda
+}
 
 # PS1='[\u@\h \W]\$ '
 PS1='\u@\h$ '

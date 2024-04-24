@@ -48,7 +48,7 @@ require("mason-lspconfig").setup {
 -- Prerequisite: Install `tree-sitter-cli`
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "rust", "lua", "r", "vimdoc", "julia", "yaml", "latex", "markdown", "markdown_inline" },
+  ensure_installed = { "rust", "lua", "r", "vimdoc", "julia", "yaml", "markdown", "markdown_inline" },
   sync_install = true,
   auto_install = false,
   highlight = {
@@ -699,6 +699,7 @@ vim.cmd([[
     autocmd BufNewFile,BufRead *.smk set syntax=snakemake
     autocmd BufNewFile,BufRead *.def set filetype=bash
     autocmd BufNewFile,BufRead *.job set syntax=bash
+    autocmd BufNewFile,BufRead *.config set syntax=groovy
     autocmd BufNewFile,BufRead *.md set syntax=markdown
 ]])
 
