@@ -73,4 +73,6 @@ map('n', '<F8>', ':TagbarToggle<CR>', {noremap = false})
 -- Navigation
 map('n', '<F7>', ':Lexplore<CR>', {noremap = false})
 
-
+-- Reset syntax highlighting
+map('n', '<F12>', '<Esc>:syntax sync fromstart<CR>', {noremap = false})
+map('i', '<F12>', '<C-o>:syntax sync fromstart<CR>', {noremap = false})
