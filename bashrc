@@ -17,18 +17,6 @@ alias sudo='sudo -E'
 alias disable_edp1='swaymsg output eDP-1 disable'
 
 # Set an alias for connecting to RStudio
-alias launch-rstudio="conda activate charite-hpc && sc-launch-rstudio \
-    -t 12:00:00 \
-    -u cabe12 \
-    -N 1 \
-    -n 1 \
-    --mem 64G \
-    -c 16 \
-    -i /sc-projects/sc-proj-computational-medicine/programs/all-inclusive-rstudio-apptainer/sif/all_inclusive_rstudio_4.3.1.sif \
-    -B /sc-projects/sc-proj-computational-medicine/ \
-    -B /sc-scratch/sc-scratch-computational-medicine/ \
-    -B /sc-resources/ukb/data/ \
-    -B /opt/conda"
 alias sshfs-hpc='sshfs s-sc-frontend1.charite.de:/ ~/SC-HPC/'
 alias ssh-hpc='ssh s-sc-frontend1.charite.de'
 alias mount-onedrive="rclone mount \
@@ -38,6 +26,7 @@ alias mount-onedrive="rclone mount \
 
 launch_rstudio() {
 conda activate charite-hpc
+container_dir="/sc-projects/sc-proj-computational-medicine/programs/all-inclusive-rstudio-apptainer/sif"
 sc-launch-rstudio \
     -t 12:00:00 \
     -u cabe12 \
@@ -45,7 +34,7 @@ sc-launch-rstudio \
     -n 1 \
     --mem 64G \
     -c 16 \
-    -i /sc-projects/sc-proj-computational-medicine/programs/all-inclusive-rstudio-apptainer/sif/all_inclusive_rstudio_4.3.1.sif \
+    -i ${container_dir}/all_inclusive_rstudio_4.3.1.sif \
     -B /sc-projects/sc-proj-computational-medicine/ \
     -B /sc-scratch/sc-scratch-computational-medicine/ \
     -B /sc-resources/ukb/data/ \

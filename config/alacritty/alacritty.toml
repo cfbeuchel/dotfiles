@@ -1,6 +1,12 @@
-[colors.primary]
-background = "#002B36"
-foreground = "#F6F5F4"
+# [colors.primary]
+# background = "#002B36"
+# foreground = "#F6F5F4"
+
+# Download repo to this directory:
+# https://github.com/alacritty/alacritty-theme
+import = [
+    "~/.config/alacritty/themes/themes/gruvbox_light.toml"
+]
 
 [font]
 size = 12.0
@@ -28,3 +34,5 @@ program = "/bin/bash"
 bindings = [
    { key = "Return", mods = "Control|Shift", action = "SpawnNewInstance" }
 ]
+
+
