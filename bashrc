@@ -8,7 +8,7 @@
 alias ..='cd ..'
 alias ls='ls --color=auto'
 alias ll='eza -hlr --icons'
-alias cat='bat -pp --wrap character --terminal-width 80'
+# alias cat='bat -pp --wrap character --terminal-width 80'
 alias r='conda activate radian && radian --no-save'
 alias tree="tree -C"
 alias mamba='micromamba'

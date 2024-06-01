@@ -669,7 +669,9 @@ o.splitright = true
 
 -- Colorscheme
 o.termguicolors = true
-vim.cmd [[colorscheme deus]]
+-- vim.cmd [[colorscheme deus]]
+vim.cmd [[set bg=light]]
+vim.cmd [[colorscheme gruvbox]]
 
 -- This was some colorfix
 vim.cmd[[
