@@ -2,44 +2,19 @@
 # ~/.bashrc
 #
 
+### Presets
+
+[[ "$(whoami)" = "root" ]] && return
+
+[[ -z "$FUNCNEST" ]] && export FUNCNEST=100          # limits recursive functions, see 'man bash'
+
+## Use the up and down arrow keys for finding a command in history
+## (you can write some initial letters of the command first).
+bind '"\e[A":history-search-backward'
+bind '"\e[B":history-search-forward'
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
-
-alias ..='cd ..'
-alias ls='ls --color=auto'
-alias ll='eza -hlr --icons'
-# alias cat='bat -pp --wrap character --terminal-width 80'
-alias r='conda activate radian && radian --no-save'
-alias tree="tree -C"
-alias mamba='micromamba'
-alias conda='micromamba'
-alias sudo='sudo -E'
-alias disable_edp1='swaymsg output eDP-1 disable'
-
-# Set an alias for connecting to RStudio
-alias sshfs-hpc='sshfs s-sc-frontend1.charite.de:/ ~/SC-HPC/'
-alias ssh-hpc='ssh s-sc-frontend1.charite.de'
-alias mount-onedrive="rclone mount \
-    --vfs-cache-mode full \
-    ChariteOneDrive: OneDrive/ \
-    --header 'Prefer: Include-Feature=AddToOneDrive'"
-
-launch_rstudio() {
-conda activate charite-hpc
-container_dir="/sc-projects/sc-proj-computational-medicine/programs/all-inclusive-rstudio-apptainer/sif"
-sc-launch-rstudio \
-    -t 12:00:00 \
-    -u cabe12 \
-    -N 1 \
-    -n 1 \
-    --mem 64G \
-    -c 16 \
-    -i ${container_dir}/all_inclusive_rstudio_4.3.1.sif \
-    -B /sc-projects/sc-proj-computational-medicine/ \
-    -B /sc-scratch/sc-scratch-computational-medicine/ \
-    -B /sc-resources/ukb/data/ \
-    -B /opt/conda
-}
 
 # PS1='[\u@\h \W]\$ '
 PS1='\u@\h$ '
@@ -90,6 +65,31 @@ export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
 
+# CD on quit when using nnn (-> use alias 'n')
+if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
+    source /usr/share/nnn/quitcd/quitcd.bash_zsh
+fi
+
+#
+# ALIASES ----
+
+alias ..='cd ..'
+alias ls='ls --color=auto'
+alias ll='eza -hlr --icons'
+# alias cat='bat -pp --wrap character --terminal-width 80'
+alias r='conda activate radian && radian --no-save'
+alias tree="tree -C"
+alias mamba='micromamba'
+alias conda='micromamba'
+alias sudo='sudo -E'
+alias disable_edp1='swaymsg output eDP-1 disable'
+
+# Set an alias for connecting to RStudio
+alias sshfs-hpc='sshfs s-sc-frontend1.charite.de:/ ~/SC-HPC/'
+alias ssh-hpc='ssh s-sc-frontend1.charite.de'
+
+# UTILITY FUNCTIONS ----
+
 # configure proxy settings for the shell 
 function enable_proxy() {
     export http_proxy="http://proxy.charite.de:8080"
@@ -116,16 +116,36 @@ function disable_proxy() {
     echo "Proxy settings disabled."
 }
 
-### Presets
+mount_onedrive() {
+rclone mount \
+    --vfs-cache-mode full \
+    ChariteOneDrive: OneDrive/ \
+    --header 'Prefer: Include-Feature=AddToOneDrive' \
+    --daemon
+}
 
-[[ "$(whoami)" = "root" ]] && return
+unmount_onedrive() {
+    fusermount -u /home/carl/OneDrive/
+}
 
-[[ -z "$FUNCNEST" ]] && export FUNCNEST=100          # limits recursive functions, see 'man bash'
+launch_rstudio() {
+conda activate charite-hpc
+container_dir="/sc-projects/sc-proj-computational-medicine/programs/all-inclusive-rstudio-apptainer/sif"
+sc-launch-rstudio \
+    -t 12:00:00 \
+    -u cabe12 \
+    -N 1 \
+    -n 1 \
+    --mem 64G \
+    -c 16 \
+    -i ${container_dir}/all_inclusive_rstudio_4.3.1.sif \
+    -B /sc-projects/sc-proj-computational-medicine/ \
+    -B /sc-scratch/sc-scratch-computational-medicine/ \
+    -B /sc-resources/ukb/data/ \
+    -B /opt/conda
+}
 
-## Use the up and down arrow keys for finding a command in history
-## (you can write some initial letters of the command first).
-bind '"\e[A":history-search-backward'
-bind '"\e[B":history-search-forward'
+# MAMBA ----
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
@@ -144,7 +164,3 @@ fi
 unset __mamba_setup
 # <<< mamba initialize <<<
 
-# CD on quit when using nnn (-> use alias 'n')
-if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
-    source /usr/share/nnn/quitcd/quitcd.bash_zsh
-fi
