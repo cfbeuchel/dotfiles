@@ -117,11 +117,11 @@ function disable_proxy() {
 }
 
 mount_onedrive() {
-rclone mount \
-    --vfs-cache-mode full \
-    ChariteOneDrive: OneDrive/ \
-    --header 'Prefer: Include-Feature=AddToOneDrive' \
-    --daemon
+    rclone mount \
+        --vfs-cache-mode full \
+        ChariteOneDrive: OneDrive/ \
+        --header 'Prefer: Include-Feature=AddToOneDrive' \
+        --daemon
 }
 
 unmount_onedrive() {
@@ -129,20 +129,20 @@ unmount_onedrive() {
 }
 
 launch_rstudio() {
-conda activate charite-hpc
-container_dir="/sc-projects/sc-proj-computational-medicine/programs/all-inclusive-rstudio-apptainer/sif"
-sc-launch-rstudio \
-    -t 12:00:00 \
-    -u cabe12 \
-    -N 1 \
-    -n 1 \
-    --mem 64G \
-    -c 16 \
-    -i ${container_dir}/all_inclusive_rstudio_4.3.1.sif \
-    -B /sc-projects/sc-proj-computational-medicine/ \
-    -B /sc-scratch/sc-scratch-computational-medicine/ \
-    -B /sc-resources/ukb/data/ \
-    -B /opt/conda
+    conda activate charite-hpc
+    container_dir="/sc-projects/sc-proj-computational-medicine/programs/all-inclusive-rstudio-apptainer/sif"
+    sc-launch-rstudio \
+        -t 12:00:00 \
+        -u cabe12 \
+        -N 1 \
+        -n 1 \
+        --mem 64G \
+        -c 16 \
+        -i ${container_dir}/all_inclusive_rstudio_4.3.1.sif \
+        -B /sc-projects/sc-proj-computational-medicine/ \
+        -B /sc-scratch/sc-scratch-computational-medicine/ \
+        -B /sc-resources/ukb/data/ \
+        -B /opt/conda
 }
 
 # MAMBA ----
