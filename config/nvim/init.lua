@@ -205,18 +205,9 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<CR>'] = cmp.mapping({
-       i = function(fallback)
-         if cmp.visible() and cmp.get_active_entry() then
-           cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-         else
-           fallback()
-         end
-       end,
-       s = cmp.mapping.confirm({ select = false }), -- this is the default for CR also
-       c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
-     }),
-    ['<Left>'] = cmp.mapping.select_prev_item(select_opts),
+    ["<CR>"] = cmp.config.disable,
+    ["<C-y>"] = cmp.mapping.confirm(),
+      ['<Left>'] = cmp.mapping.select_prev_item(select_opts),
     ['<Right>'] = cmp.mapping.select_prev_item(select_opts),
     -- ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
     -- ['<Down>'] = cmp.mapping.select_next_item(select_opts),
