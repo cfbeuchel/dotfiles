@@ -53,6 +53,9 @@ export JULIA_CMDSTAN_HOME=$CMDSTAN
 HISTSIZE=2000
 HISTFILESIZE=4000
 
+# Themes for `bat`
+export BAT_THEME='gruvbox-light'
+
 # alias for clearing screen properly
 alias cls='printf "\033c"'
 
