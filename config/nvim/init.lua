@@ -459,13 +459,36 @@ lspconfig.marksman.setup({
     standalone = true
 })
 
--- Groovy
-require'lspconfig'.groovyls.setup{
-  -- Unix
-  cmd = { "java", "-jar", "/home/carl/Documents/06_language_server_protocol/groovy-language-server/build/libs/groovy-language-server-all.jar" },
-  filetypes = { "groovy", "nextflow"},
+-- Nextflow
+-- Hot patch nvim-lspconfig to add Nextflow language server
+-- See here: https://github.com/nextflow-io/language-server/issues/56
+require("lspconfig.configs").nextflow_ls = {
+  default_config = {
+    cmd = { "java", "-jar", "nextflow-language-server-all.jar" },
+    filetypes = { "nextflow" },
+    root_dir = function(fname)
+      local util = require("lspconfig.util")
+      return util.root_pattern('nextflow.config')(fname) or util.find_git_ancestor(fname)
+    end,
+    settings = {
+      nextflow = {
+        files = {
+          exclude = { ".git", ".nf-test", "work" },
+        },
+      },
+    },
+  },
+}
+
+require'lspconfig'.nextflow_ls.setup{
+  cmd = {
+    "java",
+    "-jar",
+    "/home/carl/Documents/06_language_server_protocol/nextflow-language-server/build/libs/nextflow-language-server-all.jar"
+  },
   single_file_support = true,
   standalone = true,
+  capabilities = vim.lsp.protocol.make_client_capabilities(),
 }
 
 -- GUTENTAGS --
