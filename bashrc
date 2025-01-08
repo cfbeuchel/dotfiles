@@ -19,6 +19,13 @@ bind '"\e[B":history-search-forward'
 # PS1='[\u@\h \W]\$ '
 PS1='\u@\h$ '
 
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
 # Use z for moving quicker through directories
 [[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 
@@ -92,6 +99,12 @@ alias sshfs-hpc='sshfs s-sc-frontend1.charite.de:/ ~/SC-HPC/'
 alias ssh-hpc='ssh s-sc-frontend1.charite.de'
 
 # UTILITY FUNCTIONS ----
+
+# When within the Charite network, mount the cluster project directory
+function mount_smb() {
+    gio mount smb://sc-data.sc-store.charite.de/sc-project-computational-medicine
+    ln -sf /run/user/1000/gvfs/smb-share\:server\=sc-data.sc-store.charite.de\,share\=sc-project-computational-medicine/ SC-HPC-SMB
+}
 
 # configure proxy settings for the shell 
 function enable_proxy() {
