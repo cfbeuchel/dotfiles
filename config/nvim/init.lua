@@ -290,7 +290,8 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 
 -- Declare global config
 -- https://vonheikemen.github.io/devlog/tools/setup-nvim-lspconfig-plus-nvim-cmp/
-local lsp_defaults = {
+-- local lsp_defaults = 
+vim.lsp.config('*', {
   flags = {
     debounce_text_changes = 150,
   },
@@ -300,15 +301,7 @@ local lsp_defaults = {
   on_attach = function(client, bufnr)
     vim.api.nvim_exec_autocmds('User', {pattern = 'LspAttached'})
   end
-}
-
--- Merge lsp_defaults with the lspconfig
-local lspconfig = require('lspconfig')
-lspconfig.util.default_config = vim.tbl_deep_extend(
-  'force',
-  lspconfig.util.default_config,
-  lsp_defaults -- from the variable above
-)
+})
 
 -- Keybindings for LSP
 vim.api.nvim_create_autocmd('User', {
@@ -393,23 +386,26 @@ require('which-key').add(
 -- LANGUAGE SETUP --
 
 -- Rust
-lspconfig.rust_analyzer.setup({
+vim.lsp.config('rust_analyzer', {
     cmd = {"/home/carl/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer"},
     single_file_support = true,
     standalone = true,
-    on_attach = function(client, bufnr)
-      lspconfig.util.default_config.on_attach(client, bufnr)
-    end
+    -- on_attach = function(client, bufnr)
+    --   lspconfig.util.default_config.on_attach(client, bufnr)
+    -- end
 })
+vim.lsp.enable('rust_analyzer')
 
 -- Python
 -- TODO: black, ruff, snakefmt
-lspconfig.ruff_lsp.setup{
+vim.lsp.config('ruff', {
     cmd = {
         "/home/carl/micromamba/envs/ruff/bin/ruff-lsp"
     }
-}
-lspconfig.pylsp.setup{
+})
+vim.lsp.enable('ruff')
+
+vim.lsp.config('pylsp', {
   settings = {
     pylsp = {
       plugins = {
@@ -422,74 +418,77 @@ lspconfig.pylsp.setup{
       }
     }
   }
-}
+})
+vim.lsp.enable('pylsp')
 
 -- Latex
-lspconfig.texlab.setup{}
+vim.lsp.enable('texlab')
 
 -- Julia
-lspconfig.julials.setup({
+vim.lsp.config('julials',{
     single_file_support = true,
     standalone = true,
-    on_attach = function(client, bufnr)
-      lspconfig.util.default_config.on_attach(client, bufnr)
-    end,
+    -- on_attach = function(client, bufnr)
+    --   lspconfig.util.default_config.on_attach(client, bufnr)
+    -- end,
     filetypes={"julia"}
 })
+vim.lsp.enable('julials')
 
 -- Bash
--- lspconfig.bashls.setup{}
+-- vim.lsp.enable('bashls')
+
 
 -- Lua
 -- https://github.com/hrsh7th/nvim-cmp/issues/684
 --vim.opt.completion_workspaceWord = false
 --vim.opt.Lua.completion.showWord = 'Disable'
-lspconfig.lua_ls.setup{}
+vim.lsp.enable('lua_ls')
 
 -- R
-lspconfig.r_language_server.setup {
+vim.lsp.config('r_language_server', {
     cmd = { "/usr/bin/R", "--slave", "-e", "languageserver::run()" },
-    filetypes={"r", "rmd"},
-}
+    filetypes={"r", "rmd", "R"},
+    on_attach = function(client, _)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+    end,
+})
+-- vim.lsp.enable('r_language_server')
+
+-- New LSP `air`
+vim.lsp.config('air', {
+    cmd = { "/home/carl/bin/air", "language-server" },
+    on_attach = function(_, bufnr)
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            callback = function()
+                vim.lsp.buf.format()
+            end,
+        })
+    end,
+})
+vim.lsp.enable('air')
 
 -- Marksman
-lspconfig.marksman.setup({
+vim.lsp.config('marksman', {
     cmd = {"/home/carl/.local/share/nvim/mason/packages/marksman/marksman-linux-x64", "server"},
     single_file_support = true,
     standalone = true
 })
+vim.lsp.enable('marksman')
 
--- Nextflow
--- Hot patch nvim-lspconfig to add Nextflow language server
--- See here: https://github.com/nextflow-io/language-server/issues/56
-require("lspconfig.configs").nextflow_ls = {
-  default_config = {
-    cmd = { "java", "-jar", "nextflow-language-server-all.jar" },
-    filetypes = { "nextflow" },
-    root_dir = function(fname)
-      local util = require("lspconfig.util")
-      return util.root_pattern('nextflow.config')(fname) or util.find_git_ancestor(fname)
-    end,
-    settings = {
-      nextflow = {
-        files = {
-          exclude = { ".git", ".nf-test", "work" },
-        },
-      },
-    },
-  },
-}
-
-require'lspconfig'.nextflow_ls.setup{
+vim.lsp.config('nextflow_ls', {
   cmd = {
     "java",
     "-jar",
-    "/home/carl/Documents/06_language_server_protocol/nextflow-language-server/build/libs/nextflow-language-server-all.jar"
+    "/home/carl/Documents/06_language_server_protocol/nextflow-language-server/build/libs/language-server-all.jar"
   },
   single_file_support = true,
   standalone = true,
   capabilities = vim.lsp.protocol.make_client_capabilities(),
-}
+})
+vim.lsp.enable('nextflow_ls')
 
 -- GUTENTAGS --
 

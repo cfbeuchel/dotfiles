@@ -2,11 +2,12 @@ return require('lazy').setup({
 
   -- LSP configuration
   {
-    'neovim/nvim-lspconfig',
+    "mason-org/mason-lspconfig.nvim",
+    opts = {},
     dependencies = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-    }
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
+    },
   },
 
   -- Ripgrep
