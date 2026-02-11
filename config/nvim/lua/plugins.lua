@@ -117,6 +117,7 @@ return require('lazy').setup({
     dependencies = {
       'vim-pandoc/vim-pandoc-syntax',
       'jmbuhr/otter.nvim',
+      "nvim-treesitter/nvim-treesitter",
     }
   },
 

@@ -40,15 +40,15 @@ require("mason").setup {
 
 -- `mason-lspconfig` bridges mason.nvim with the lspconfig plugin
 require("mason-lspconfig").setup {
-    ensure_installed = {"lua_ls", "marksman", "texlab"},
+    ensure_installed = {"lua_ls", "marksman"},
 }
 
 -- TREESITTER --
 
--- Prerequisite: Install `tree-sitter-cli`
+-- Prerequisite: Install `tree-sitter-cli` with `cargo install --locked tree-sitter-cli`
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "rust", "lua", "r", "vimdoc", "julia", "yaml", "markdown", "markdown_inline" },
+  ensure_installed = { "rust", "lua", "r", "vimdoc", "yaml", "markdown", "markdown_inline" },
   sync_install = true,
   auto_install = false,
   highlight = {
@@ -252,28 +252,29 @@ cmp.setup({
 })
 
 -- Cmp Diagnostic config
-local sign = function(opts)
-  vim.fn.sign_define(opts.name, {
-    texthl = opts.name,
-    text = opts.text,
-    numhl = ''
-  })
-end
-sign({name = 'DiagnosticSignError', text = '✘'})
-sign({name = 'DiagnosticSignWarn', text = '▲'})
-sign({name = 'DiagnosticSignHint', text = '⚑'})
-sign({name = 'DiagnosticSignInfo', text = ''})
+-- TODO: This was deprecated and needs to be reworked!
+-- local sign = function(opts)
+--   vim.fn.sign_define(opts.name, {
+--     texthl = opts.name,
+--     text = opts.text,
+--     numhl = ''
+--   })
+-- end
+-- sign({name = 'DiagnosticSignError', text = '✘'})
+-- sign({name = 'DiagnosticSignWarn', text = '▲'})
+-- sign({name = 'DiagnosticSignHint', text = '⚑'})
+-- sign({name = 'DiagnosticSignInfo', text = ''})
 
-vim.diagnostic.config({
-  virtual_text = false,
-  severity_sort = true,
-  float = {
-    border = 'rounded',
-    source = 'always',
-    header = '',
-    prefix = '',
-  },
-})
+-- vim.diagnostic.config({
+--   virtual_text = false,
+--   severity_sort = true,
+--   float = {
+--     border = 'rounded',
+--     source = 'always',
+--     header = '',
+--     prefix = '',
+--   },
+-- })
 
 -- Languagserver diagnostic settings
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
@@ -403,7 +404,7 @@ vim.lsp.config('ruff', {
         "/home/carl/micromamba/envs/ruff/bin/ruff-lsp"
     }
 })
-vim.lsp.enable('ruff')
+-- vim.lsp.enable('ruff')
 
 vim.lsp.config('pylsp', {
   settings = {
@@ -443,18 +444,18 @@ vim.lsp.enable('julials')
 -- https://github.com/hrsh7th/nvim-cmp/issues/684
 --vim.opt.completion_workspaceWord = false
 --vim.opt.Lua.completion.showWord = 'Disable'
-vim.lsp.enable('lua_ls')
+-- vim.lsp.enable('lua_ls')
 
 -- R
 vim.lsp.config('r_language_server', {
-    cmd = { "/usr/bin/R", "--slave", "-e", "languageserver::run()" },
+    cmd = { "/usr/bin/R", "--slave", "-e", ".libPaths('/home/carl/languageserver-library/'); languageserver::run()" },
     filetypes={"r", "rmd", "R"},
     on_attach = function(client, _)
         client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.documentRangeFormattingProvider = false
     end,
 })
--- vim.lsp.enable('r_language_server')
+vim.lsp.enable('r_language_server')
 
 -- New LSP `air`
 vim.lsp.config('air', {
@@ -621,7 +622,8 @@ let g:tagbar_type_julia = {
 ]]
 
 -- OTTER --
-
+local otter = require'otter'
+otter.setup{}
 -- TODO (https://github.com/jmbuhr/otter.nvim)
 
 -- VIM SURROUND --
@@ -634,16 +636,9 @@ let g:tagbar_type_julia = {
 
 -- Programming Language Support --
 
--- Quarto
-require('quarto').setup({
-  lspFeatures = {
-    languages = { 'r', 'julia', 'bash' },
-  },
-})
+-- QUARTO 
 
--- Julia
-
--- TODO: 'julia-vim'
+require('quarto').setup{}
 
 -- NETRW --
 

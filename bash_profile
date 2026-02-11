@@ -11,3 +11,5 @@
 #
 # Include ~/bin
 export PATH=$PATH:~/bin/
+
+. "$HOME/.local/bin/env"
